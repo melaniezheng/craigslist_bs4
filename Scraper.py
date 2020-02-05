@@ -97,19 +97,9 @@ class CraiglistScraper(object):
             except:
                 neighborhood = ""
             try:
-                bedrooms = result.find('span', {'class':'housing'}).string
+                bedrooms = result.find('span', {'class':'housing'}).text
             except:
                 bedrooms = ""
-            try:
-                housing = result.find('span', {'class':'housing'}).string.split("-")
-                if len(housing)>1:
-                    bedrooms = housing[0]
-                    size = housing[1]
-                elif len(housing) == 1:
-                    bedrooms = housing[0]
-                    size = ""
-            except:
-                size = ""
             if url in cats_ok_listings:
                 cats_ok = "1"
             else:
@@ -123,7 +113,7 @@ class CraiglistScraper(object):
             else:
                 no_fee = "0"
 
-            listing = Listing(url, listing_id, repost_of, title, post_date, self.boro, neighborhood, price, size, bedrooms, cats_ok, dogs_ok, no_fee)
+            listing = Listing(url, listing_id, repost_of, title, post_date, self.boro, neighborhood, price, bedrooms, cats_ok, dogs_ok, no_fee)
             single_page_result.append(listing.__repr__())
 
         print(f"COUNT result-row: {count}") # for debugging
