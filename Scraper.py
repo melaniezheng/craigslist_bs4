@@ -14,6 +14,7 @@ class CraiglistScraper(object):
         self.cats_ok = cats_ok
         self.no_broker_fee = no_broker_fee
   
+
     def generate_url_lst(self, url):
         html_page = urllib.request.urlopen(url)
         soup = BeautifulSoup(html_page, "lxml")
@@ -26,6 +27,7 @@ class CraiglistScraper(object):
             url_lst.append(url_pp)  # generate url list
         return url_lst
 
+    
     def filter_ok_listings(self, url):
         html_page = urllib.request.urlopen(url)
         soup = BeautifulSoup(html_page, "lxml")
@@ -35,10 +37,10 @@ class CraiglistScraper(object):
                 url = result.find("a", {"class": "result-title hdrlnk"})
                 url = url["href"]
             except:
-                #print("no filter_urls")
                 continue
             filter_ok_listings.add(url)
         return filter_ok_listings
+    
     
     def get_nyc_neighborhoods(self, url):
         html_page = urllib.request.urlopen(url)
@@ -59,6 +61,7 @@ class CraiglistScraper(object):
             mnh_hood[hood] = v
         return mnh_hood
 
+    
     def extract_posts(self, url, dogs_ok_listings, cats_ok_listings, no_fee_listings):
         html_page = urllib.request.urlopen(url)
         soup = BeautifulSoup(html_page, "lxml")
@@ -112,13 +115,11 @@ class CraiglistScraper(object):
                 no_fee = "1"
             else:
                 no_fee = "0"
-
             listing = Listing(url, listing_id, repost_of, title, post_date, self.boro, neighborhood, price, bedrooms, cats_ok, dogs_ok, no_fee)
-            single_page_result.append(listing.__repr__())
-
-        print(f"COUNT result-row: {count}") # for debugging
+            single_page_result.append(listing.__repr__())    
         return single_page_result
 
+    
     def extract_nyc_posts(self, url, neighborhood, dogs_ok_listings, cats_ok_listings, no_fee_listings):
         html_page = urllib.request.urlopen(url)
         soup = BeautifulSoup(html_page, "lxml")
@@ -133,14 +134,10 @@ class CraiglistScraper(object):
                 continue
             try:
                 listing_id = result["data-pid"]
-                # print("listing_id:")
-                # print(listing_id)
             except:
                 listing_id = ""
             try:
                 repost_of = result["data-repost-of"]
-                # print("repost_of:")
-                # print(repost_of)
             except:
                 repost_of = ""
             try:
@@ -179,11 +176,8 @@ class CraiglistScraper(object):
                 no_fee = "1"
             else:
                 no_fee = "0"
-
             listing = Listing(url, listing_id, repost_of, title, post_date, self.boro, neighborhood, price, size, bedrooms, cats_ok, dogs_ok, no_fee)
             single_page_result.append(listing.__repr__())
-
-        print(f"COUNT result-row: {count}") # for debugging
         return single_page_result
 
     def write_to_tsv(self, all_posts, location, IsNYC = False):
