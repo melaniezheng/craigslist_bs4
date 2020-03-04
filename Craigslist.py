@@ -3,8 +3,6 @@ from Scraper import CraiglistScraper
 import re
 
 
-# add phoenix - cph evl nph wvl, sandiego - csd nsd esd ssd
-
 def feature_urls(boro, url):
     result=[]
     dog_allowed_url = url + "&pets_dog=1"
@@ -41,13 +39,11 @@ location = "newyork"
 boro = "mnh"
 
 url0 = f"https://{location}.craigslist.org/search/{boro}/apa?&min_price={min_price}&max_price={max_price}&min_bedrooms={min_bedrooms}&max_bedrooms={max_bedrooms}"
-# scraper = CraiglistScraper(boro, url0)
-# mnh_hood = scraper.get_nyc_neighborhoods(url0)
-# to save time
-mnh_hood = {'Battery Park': 'nh_120', 'Chelsea': 'nh_134', 'Chinatown / Lit Italy': 'nh_160', 'Downtown': 'nh_121', 'East Harlem': 'nh_159', 'East Village': 'nh_129', 'Financial District': 'nh_122', 'Flatiron': 'nh_133', 'Gramercy': 'nh_132', 'Greenwich Village': 'nh_127', 'Harlem / Morningside': 'nh_141', 'Inwood / Wash Hts': 'nh_140', 'Lower East Side': 'nh_126', 'Midtown': 'nh_135', 'Midtown East': 'nh_136', 'Midtown West': 'nh_137', 'Murray Hill': 'nh_131', 'Nolita / Bowery': 'nh_125', 'SoHo': 'nh_124', 'TriBeCa': 'nh_123', 'Union Square': 'nh_130', 'Upper East Side': 'nh_139', 'Upper West Side': 'nh_138', 'West Village': 'nh_128'}
+scraper = CraiglistScraper(boro, url0)
+mnh_hood = scraper.get_nyc_neighborhoods(url0)
 
 all_posts=[]
-for neighborhood in mnh_hood: #neighborhood, id
+for neighborhood in mnh_hood: 
     url = url0 + "&" + mnh_hood[neighborhood]
     scraper, dogs_ok_listings, cats_ok_listings, no_fee_listings = feature_urls(boro, url)
     url_lst = scraper.generate_url_lst(url)
