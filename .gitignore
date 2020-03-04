@@ -15,4 +15,5 @@ data.tsv
 output.txt
 data/*
 ppt/*
+*.csv
 *.tsv
